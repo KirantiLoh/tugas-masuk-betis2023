@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+    .input {
+        @apply p-2 text-black outline-none border-black border-2 rounded w-full min-h-[36px] h-max;
+    }
+    .button {
+        @apply px-2 py-3 rounded text-lg transition-all duration-300;
+    }
+    .button.primary {
+        @apply bg-yellow-500 text-white shadow;
+    }
+    .button.primary:hover {
+        @apply opacity-80;
+    }
+    .button.primary:disabled {
+        @apply bg-slate-500 opacity-80;
+    }
+}
+
+@layer utilities {
+    .fixed.center {
+        @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    }
+}
