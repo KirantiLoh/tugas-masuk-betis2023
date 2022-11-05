@@ -7,6 +7,7 @@ import { AuthProvider } from '../context/AuthContext';
 import { SideNavProvider } from 'context/SideNavContext';
 import { UpdateFormProvider } from 'context/UpdateFormContext';
 import { RefetchProvider } from 'context/RefetchContext';
+import { ToastProvider } from 'context/ToastContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -14,15 +15,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <AxiosProvider>
           <OverlayProvider>
-            <SideNavProvider>
-              <UpdateFormProvider>
-                <Head>
-                  <title>Roti BETIS</title>
-                  <link rel="icon" href="/favicon.ico" />
-                </Head>
-                <Component {...pageProps} />
-              </UpdateFormProvider>
-            </SideNavProvider>
+            <ToastProvider>
+              <SideNavProvider>
+                <UpdateFormProvider>
+                    <Head>
+                      <title>Roti BETIS</title>
+                      <link rel="icon" href="/favicon.ico" />
+                    </Head>
+                    <Component {...pageProps} />
+                </UpdateFormProvider>
+              </SideNavProvider>
+            </ToastProvider>
           </OverlayProvider>
         </AxiosProvider>
       </AuthProvider>
