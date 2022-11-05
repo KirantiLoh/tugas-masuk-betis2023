@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { Dispatch, ReactNode, SetStateAction} from 'react';
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 interface IAuthContextValue {
     user: IUser
@@ -56,6 +56,26 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
             setIsLoading(false);
         }
     }
+
+    // TODO: Remove this function after login endpoint is available
+    const getUserDetail = async () => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user/`,{
+                headers: {
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+                }
+            });
+            const data: IUser = await res.data;
+            setUser(data);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    useEffect(() => {
+        getUserDetail();
+    }, []);
   
     const contextValue = {
         user: user,
