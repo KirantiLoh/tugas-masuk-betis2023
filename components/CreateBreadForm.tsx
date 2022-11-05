@@ -4,6 +4,8 @@ import { useOverlay } from "context/OverlayContext";
 import axios from "axios";
 import { useRef } from 'react';
 import { useRefetch } from "context/RefetchContext";
+import { useToast } from 'context/ToastContext';
+
 interface CreateBreadFormProps {
   showForm: boolean
   setShowForm: Dispatch<SetStateAction<boolean>>
@@ -14,6 +16,8 @@ const CreateBreadForm = ({showForm, setShowForm}: CreateBreadFormProps) => {
     const { setShowOverlay } = useOverlay();
 
     const { setRefetch } = useRefetch();
+
+    const { setShowToast, setMessage, setType } = useToast();
 
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
@@ -56,12 +60,17 @@ const CreateBreadForm = ({showForm, setShowForm}: CreateBreadFormProps) => {
         }
         setExpiredDate("");
         setRefetch(true);
+        setType("success");
+        setMessage("Roti berhasil ditambahkan!");
       }
       catch (err) {
         console.log(err);
+        setType("error");
+        setMessage("Ada error :(");
       }
       finally {
         setLoading(false);
+        setShowToast(true);
         handleClose();
       }
     }

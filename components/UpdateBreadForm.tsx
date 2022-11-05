@@ -6,12 +6,15 @@ import Image from 'next/image';
 import { useRef } from 'react';
 import { useRefetch } from "context/RefetchContext";
 import axios from 'axios';
-    
+import { useToast } from 'context/ToastContext';
+
 const UpdateBreadForm = () => {
 
     const { showForm, setShowForm, breadDetail, setBreadDetail } = useUpdateForm();
 
     const { setShowOverlay } = useOverlay();
+
+    const { setShowToast, setMessage, setType } = useToast();
 
     const { setRefetch } = useRefetch();
 
@@ -59,13 +62,18 @@ const UpdateBreadForm = () => {
           fileInputRef.current.value = "";
         }
         setExpiredDate("");
+        setType("success");
+        setMessage("Roti berhasil diubah!");
         setRefetch(true);
       }
       catch (err) {
         console.log(err);
+        setType("error");
+        setMessage("Ada error :(");
       }
       finally {
         setLoading(false);
+        setShowToast(true);
         handleClose();
       }
     }
@@ -80,13 +88,18 @@ const UpdateBreadForm = () => {
           fileInputRef.current.value = ""
         }
         setExpiredDate("");
+        setType("warning");
+        setMessage("Roti dihapus");
         setRefetch(true);
       }
       catch (err) {
         console.log(err);
+        setType("error");
+        setMessage("Ada error :(");
       }
       finally {
-        handleClose()
+        setShowToast(true);
+        handleClose();
       }
     }
 
@@ -149,7 +162,6 @@ const UpdateBreadForm = () => {
       <button 
         className='button primary mt-3'
         disabled={
-          loading ||
           name === breadDetail.name &&
           description === breadDetail.description &&
           expiredDate === breadDetail.expired_date &&
